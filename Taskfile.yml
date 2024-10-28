@@ -1,0 +1,40 @@
+version: '3'
+
+includes:
+  common: ./build/Taskfile.common.yml
+  windows: ./build/Taskfile.windows.yml
+  darwin: ./build/Taskfile.darwin.yml
+  linux: ./build/Taskfile.linux.yml
+
+vars:
+  APP_NAME: "wayd"
+  BIN_DIR: "bin"
+  # VITE_PORT: '{{.WAILS_VITE_PORT | default 9246}}'
+  VITE_PORT: '9246'
+
+tasks:
+
+  sql:build:
+    summary: Build sqlc generated database code 
+    cmds:
+      - sqlc generate
+
+  build:
+    summary: Builds the application
+    cmds:
+      - task: "{{OS}}:build"
+
+  package:
+    summary: Packages a production build of the application
+    cmds:
+      - task: "{{OS}}:package"
+
+  run:
+    summary: Runs the application
+    cmds:
+      - task: "{{OS}}:run"
+
+  dev:
+    summary: Runs the application in development mode
+    cmds:
+      - wails3 dev -config ./build/devmode.config.yaml -port {{.VITE_PORT}}

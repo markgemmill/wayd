@@ -1,0 +1,48 @@
+#application {
+    margin-top: 30px;
+    padding: 0 10px;
+}
+
+.wayd-iconic {
+    position: relative;
+    display: block;
+}
+
+.wayd-tooltip {
+    visibility: hidden;
+    position: absolute; 
+    display: inline-block;
+    bottom: -120%;
+    right: -100%;
+    z-index: 10;
+    font-size: 0.65em;
+    border: 1px solid #CCC;
+    border-radius: 3px;
+    padding: 2px;
+    background-color: white;
+    width: 300%;
+    height: auto;
+    padding: 0px 3px;
+    text-align: center;
+}
+
+.wayd-icon {
+    position: relative;
+    top: 3px;
+    color: #888;
+    margin: auto 0;
+}
+.wayd-iconic:hover .wayd-icon {
+    color: black;
+    cursor: pointer;
+}
+.wayd-iconic:hover .wayd-tooltip {
+    visibility: visible;
+    transform: 1s all ease;
+    transition-delay: 1s;
+}
+
+label {
+    font-weight: bold !important;
+    color: #333;
+}
