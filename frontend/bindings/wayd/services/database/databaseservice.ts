@@ -7,44 +7,44 @@ import {Call as $Call, Create as $Create} from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import * as time$0 from "../../../../../time/models.js";
+import * as time$0 from "../../../time/models.js";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
 import * as $models from "./models.js";
 
 export function ActiveEntryCount(): Promise<number> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(3505691156) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.ActiveEntryCount") as any;
     return $resultPromise;
 }
 
 export function CategoryCount(): Promise<number> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(1925486916) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.CategoryCount") as any;
     return $resultPromise;
 }
 
 export function Close(): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(4022690647) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.Close") as any;
     return $resultPromise;
 }
 
 export function Connect(): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(2467023949) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.Connect") as any;
     return $resultPromise;
 }
 
 export function CreateDefaults(): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(800660363) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.CreateDefaults") as any;
     return $resultPromise;
 }
 
 export function EntryCount(): Promise<number> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(1977789614) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.EntryCount") as any;
     return $resultPromise;
 }
 
 export function GetActiveEntry(): Promise<$models.Entry | null> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(2660778371) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.GetActiveEntry") as any;
     let $typingPromise = $resultPromise.then(($result) => {
         return $$createType1($result);
     }) as any;
@@ -53,7 +53,7 @@ export function GetActiveEntry(): Promise<$models.Entry | null> & { cancel(): vo
 }
 
 export function GetAllActiveCategories(): Promise<$models.Category[]> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(2269260644) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.GetAllActiveCategories") as any;
     let $typingPromise = $resultPromise.then(($result) => {
         return $$createType3($result);
     }) as any;
@@ -62,7 +62,7 @@ export function GetAllActiveCategories(): Promise<$models.Category[]> & { cancel
 }
 
 export function GetAllActiveProjects(): Promise<$models.Project[]> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(3229815450) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.GetAllActiveProjects") as any;
     let $typingPromise = $resultPromise.then(($result) => {
         return $$createType5($result);
     }) as any;
@@ -71,7 +71,7 @@ export function GetAllActiveProjects(): Promise<$models.Project[]> & { cancel():
 }
 
 export function GetEntryById(entryId: number): Promise<$models.Entry | null> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(2237962329, entryId) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.GetEntryById", entryId) as any;
     let $typingPromise = $resultPromise.then(($result) => {
         return $$createType1($result);
     }) as any;
@@ -80,7 +80,7 @@ export function GetEntryById(entryId: number): Promise<$models.Entry | null> & {
 }
 
 export function GetProjectById(projectId: number): Promise<$models.Project> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(3679173248, projectId) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.GetProjectById", projectId) as any;
     let $typingPromise = $resultPromise.then(($result) => {
         return $$createType4($result);
     }) as any;
@@ -89,12 +89,17 @@ export function GetProjectById(projectId: number): Promise<$models.Project> & { 
 }
 
 export function Initialize(): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(356715247) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.Initialize") as any;
+    return $resultPromise;
+}
+
+export function Name(): Promise<string> & { cancel(): void } {
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.Name") as any;
     return $resultPromise;
 }
 
 export function NewCategory(name: string): Promise<$models.Category | null> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(3306543441, name) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.NewCategory", name) as any;
     let $typingPromise = $resultPromise.then(($result) => {
         return $$createType6($result);
     }) as any;
@@ -103,7 +108,7 @@ export function NewCategory(name: string): Promise<$models.Category | null> & { 
 }
 
 export function NewEntry(project: $models.Project | null): Promise<$models.Entry | null> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(1246586099, project) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.NewEntry", project) as any;
     let $typingPromise = $resultPromise.then(($result) => {
         return $$createType1($result);
     }) as any;
@@ -112,7 +117,7 @@ export function NewEntry(project: $models.Project | null): Promise<$models.Entry
 }
 
 export function NewProject(name: string, category: $models.Category | null): Promise<$models.Project | null> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(2486108446, name, category) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.NewProject", name, category) as any;
     let $typingPromise = $resultPromise.then(($result) => {
         return $$createType7($result);
     }) as any;
@@ -121,12 +126,12 @@ export function NewProject(name: string, category: $models.Category | null): Pro
 }
 
 export function ProjectCount(): Promise<number> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(2974325593) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.ProjectCount") as any;
     return $resultPromise;
 }
 
 export function ProjectDurationTimes(groupOn: string, startDate: time$0.Time, endDate: time$0.Time): Promise<$models.ProjectDuration[]> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(1695658588, groupOn, startDate, endDate) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.ProjectDurationTimes", groupOn, startDate, endDate) as any;
     let $typingPromise = $resultPromise.then(($result) => {
         return $$createType9($result);
     }) as any;
@@ -135,12 +140,12 @@ export function ProjectDurationTimes(groupOn: string, startDate: time$0.Time, en
 }
 
 export function SaveEntry(entry: $models.Entry | null): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(2238242304, entry) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.SaveEntry", entry) as any;
     return $resultPromise;
 }
 
 export function StopEntry(entry: $models.Entry | null): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(990241831, entry) as any;
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.StopEntry", entry) as any;
     return $resultPromise;
 }
 

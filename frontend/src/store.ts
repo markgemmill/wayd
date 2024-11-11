@@ -3,15 +3,15 @@ import { get } from "lodash"
 import type { Ref } from "vue"
 import dayjs from "dayjs"
 import type { Dayjs } from "dayjs"
-import weekday from "dayjs/plugin/weekday"
+// import weekday from "dayjs/plugin/weekday"
 import { defineStore } from "pinia"
-import { DatabaseService, Project, Category, Entry, ProjectDuration } from "../bindings/github.com/markgemmill/wayd/services/database" 
-import { Settings } from "../bindings/github.com/markgemmill/wayd/services/models" 
-import * as SettingsService from "../bindings/github.com/markgemmill/wayd/services/settingsservice"
-import * as log from "../bindings/github.com/markgemmill/wayd/services/logger"
+import { DatabaseService, Project, Category, Entry, ProjectDuration } from "../bindings/wayd/services/database" 
+import { Settings } from "../bindings/wayd/services/models" 
+import * as SettingsService from "../bindings/wayd/services/settingsservice"
+import * as log from "../bindings/wayd/services/loggerservice"
 import { DateRange } from "./domain"
 
-dayjs.extend(weekday)
+// dayjs.extend(weekday)
 
 export const useStore = defineStore("", () => {
     const projects = ref<Project[]>(new Array()) 
@@ -79,8 +79,8 @@ export const useStore = defineStore("", () => {
         
         return DatabaseService.ProjectDurationTimes(
             groupBy,
-            currentSummaryStartDate.value.toDate(),
-            currentSummaryEndDate.value.toDate()
+            currentSummaryStartDate.value?.toDate(),
+            currentSummaryEndDate.value?.toDate()
         ).then((results: ProjectDuration[]) => {
             currentSummaryResults.value.length = 0
             results.forEach((pd: ProjectDuration) => {

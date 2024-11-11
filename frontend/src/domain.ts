@@ -5,7 +5,7 @@ import { get, isNil } from "lodash"
 
 export class TaskEntry {
     startTime: Dayjs 
-    endTime: Dayjs
+    endTime: Dayjs | undefined
     project: string
     constructor (startTime: Dayjs, project: string) {
         this.startTime = startTime 
@@ -79,8 +79,8 @@ export class DateRange {
     }
 
     static currentWeek(): DateRange {
-        const startDate = dayjs().weekday(0)
-        const endDate = dayjs().weekday(6)
+        const startDate = dayjs().day(0)
+        const endDate = dayjs().day(6)
         return new DateRange({
             startDate: startDate,
             endDate: endDate,
@@ -89,8 +89,8 @@ export class DateRange {
 
     static lastWeek(): DateRange {
         const weekAgo = dayjs().subtract(7, "days")
-        const startDate = weekAgo.weekday(0)
-        const endDate = weekAgo.weekday(6)
+        const startDate = weekAgo.day(0)
+        const endDate = weekAgo.day(6)
         return new DateRange({
             startDate: startDate,
             endDate: endDate,

@@ -53,7 +53,7 @@ import { useStore } from '../store';
 import { router } from '../router';
 import PlusCircleIcon from '../icons/PlusCircleIcon.vue';
 import ModalFrame from './ModalFrame.vue';
-import { Category } from "../../bindings/github.com/markgemmill/wayd/services/database"
+import { Category } from "../../bindings/wayd/services/database"
 
 const store = useStore()
 const modalValue = ref("")

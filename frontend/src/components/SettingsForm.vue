@@ -49,8 +49,8 @@ const syncCycle = ref<string>()
 const changes = ref<boolean>(false)
 
 const saveSettings = () => {
-    store.settings.DayEndsAt = endDate.value.toString()
-    store.settings.DayStartsAt = startDate.value.toString()
+    store.settings.DayEndsAt = endDate.value?.toString()
+    store.settings.DayStartsAt = startDate.value?.toString()
     store.settings.PromptCycle = promptCycle.value 
     store.settings.SyncCycleTo = syncCycle.value
     store.saveSettings().then(() => {

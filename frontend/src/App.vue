@@ -4,6 +4,7 @@
       <TimeClock :format="'icon'" :start-time="currentTimer" @clicked="navigateEntry"></TimeClock>
       <div class="d-flex flex-grow-1"></div>
       <HomeIcon class="me-2" :width="20" :height="20" @click="navigateTo('')"></HomeIcon>
+      <DockIcon class="me-2" :width="18" :height="18" @click="dockWindow"></DockIcon>
       <ReportFileIcon class="me-2" :width="20" :height="20" @click="navigateTo('reporting')"></ReportFileIcon>
       <InboxIcon class="me-2" :width="20" :height="20" @click="navigateTo('categories')"></InboxIcon>
       <InboxesIcon class="me-2" :width="20" :height="20" @click="navigateTo('projects')"></InboxesIcon>
@@ -20,20 +21,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onBeforeMount } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useStore } from "./store"
 import { RouterView } from "vue-router";
 import HomeIcon from "./icons/HomeIcon.vue";
 import TimeClock from "./components/TimeClock.vue";
-// import FolderIcon from "./icons/FolderIcon.vue";
 import InboxIcon from "./icons/InboxIcon.vue";
 import InboxesIcon from "./icons/InboxesIcon.vue";
 import GearIcon from "./icons/GearIcon.vue";
+import DockIcon from "./icons/DockIcon.vue";
 import ReportFileIcon from "./icons/ReportFileIcon.vue";
 import { router } from "./router";
 import dayjs from "dayjs"
 import type { Dayjs } from "dayjs"
-import * as log from "../bindings/github.com/markgemmill/wayd/services/logger"
+import * as log from "../bindings/wayd/services/loggerservice"
+import {Events} from "@wailsio/runtime"
 
 const store = useStore()
 const initialLoad = ref(0)
@@ -61,14 +63,14 @@ store.$subscribe((mutation, state) => {
     }
 })
 
+const dockWindow = () => {
+    const event = new Events.WailsEvent("dock-window", { Position: "UR"})
+    Events.Emit(event)
+}
+
 onBeforeMount(() => {
 
     log.Debug(`>>>> START URL >>>> ${window.location.href}`)
-    if (window.location.href.endsWith("/prompt")) {
-        router.push("/prompt")
-        mainWindow.value = false
-    }
-
 
     store.loadProjects().then(() => {
         initialLoad.value += 1 
@@ -84,6 +86,11 @@ onBeforeMount(() => {
 
     store.loadSettings().then(() => {
         initialLoad.value += 8        
+    })
+
+    Events.On("display-prompt", () => {
+        log.Debug("frontend display prompt")        
+        router.push("/prompt")
     })
 
 })

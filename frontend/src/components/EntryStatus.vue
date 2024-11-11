@@ -24,7 +24,7 @@
 import CurrentTask from './CurrentTask.vue';
 import { useStore } from '../store';
 import { router } from '../router';
-import * as log from "../../bindings/github.com/markgemmill/wayd/services/logger"
+import * as log from "../../bindings/wayd/services/loggerservice"
 
 const store = useStore()
 

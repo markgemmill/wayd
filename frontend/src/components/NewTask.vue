@@ -19,7 +19,7 @@
 import { ref, computed, watch } from 'vue'
 import { useStore } from '../store';
 import { router } from '../router';
-import { Project } from '../../bindings/github.com/markgemmill/wayd/services/database';
+import { Project } from '../../bindings/wayd/services/database';
 
 const store = useStore()
 const selectedProject = ref<Project>()

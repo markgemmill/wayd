@@ -15,7 +15,7 @@
 import { ref, computed, watch } from 'vue'
 import { useStore } from '../store';
 import { router } from "../router"
-import * as log from "../../bindings/github.com/markgemmill/wayd/services/logger"
+import * as log from "../../bindings/wayd/services/loggerservice"
 import ProjectSummary from './ProjectSummary.vue';
 
 const store = useStore()

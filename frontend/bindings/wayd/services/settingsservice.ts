@@ -7,19 +7,19 @@ import {Call as $Call, Create as $Create} from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import * as slog$0 from "../../../../log/slog/models.js";
+import * as appdirs$0 from "../../github.com/markgemmill/appdirs/models.js";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
 import * as $models from "./models.js";
 
 export function DatabasePath(): Promise<string> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(3851639849) as any;
+    let $resultPromise = $Call.ByName("wayd/services.SettingsService.DatabasePath") as any;
     return $resultPromise;
 }
 
 export function GetSettings(): Promise<$models.Settings | null> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(3291556084) as any;
+    let $resultPromise = $Call.ByName("wayd/services.SettingsService.GetSettings") as any;
     let $typingPromise = $resultPromise.then(($result) => {
         return $$createType1($result);
     }) as any;
@@ -27,23 +27,28 @@ export function GetSettings(): Promise<$models.Settings | null> & { cancel(): vo
     return $typingPromise;
 }
 
-export function Initialize(logger: slog$0.Logger | null): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(1405771109, logger) as any;
+export function Initialize(appDirs: appdirs$0.AppDirs): Promise<void> & { cancel(): void } {
+    let $resultPromise = $Call.ByName("wayd/services.SettingsService.Initialize", appDirs) as any;
     return $resultPromise;
 }
 
-export function Load(logger: slog$0.Logger | null): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(588316455, logger) as any;
+export function Load(): Promise<void> & { cancel(): void } {
+    let $resultPromise = $Call.ByName("wayd/services.SettingsService.Load") as any;
+    return $resultPromise;
+}
+
+export function Name(): Promise<string> & { cancel(): void } {
+    let $resultPromise = $Call.ByName("wayd/services.SettingsService.Name") as any;
     return $resultPromise;
 }
 
 export function SetSettings(settings: $models.Settings | null): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(3264572568, settings) as any;
+    let $resultPromise = $Call.ByName("wayd/services.SettingsService.SetSettings", settings) as any;
     return $resultPromise;
 }
 
 export function Write(): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(840163986) as any;
+    let $resultPromise = $Call.ByName("wayd/services.SettingsService.Write") as any;
     return $resultPromise;
 }
 

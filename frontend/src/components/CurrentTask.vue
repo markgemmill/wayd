@@ -21,7 +21,7 @@ import { ref, watch, computed, onMounted } from 'vue'
 import dayjs from "dayjs"
 import type { Dayjs } from "dayjs"
 import TimeClock from "./TimeClock.vue"
-import * as log from "../../bindings/github.com/markgemmill/wayd/services/logger"
+import * as log from "../../bindings/wayd/services/loggerservice"
 
 const { start, name, comments } = defineProps<{
     start: string 

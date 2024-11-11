@@ -7,7 +7,7 @@ import {Create as $Create} from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import * as toml$0 from "../../../pelletier/go-toml/v2/models.js";
+import * as toml$0 from "../../github.com/pelletier/go-toml/v2/models.js";
 
 export class Settings {
     "PromptEvery": number;

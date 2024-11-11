@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
 
@@ -9,6 +10,7 @@ import (
 	// "github.com/BurntSushi/toml"
 	"github.com/markgemmill/appdirs"
 	"github.com/markgemmill/pathlib"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 const version = "0.1.6"
@@ -33,6 +35,7 @@ type Settings struct {
 }
 
 type SettingsService struct {
+	logger       *slog.Logger
 	configDir    pathlib.Path
 	dataDir      pathlib.Path
 	settingsFile pathlib.Path
@@ -52,11 +55,10 @@ func (s *SettingsService) SetSettings(settings *Settings) {
 	s.Write()
 }
 
-func (s *SettingsService) Initialize(logger *slog.Logger) error {
+func (s *SettingsService) Initialize(appDirs appdirs.AppDirs) error {
 	// make sure we have our application user directories
-
-	logger.Debug("Initializing wayd settings...")
-	appDirs := appdirs.NewAppDirs("wayd", "")
+	s.logger.Debug("Initializing wayd settings...")
+	// appDirs := appdirs.NewAppDirs("wayd", "")
 	// create config directory
 	configDir := pathlib.NewPath(appDirs.UserConfigDir(), 0777)
 	dataDir := pathlib.NewPath(appDirs.UserDataDir(), 0777)
@@ -66,7 +68,7 @@ func (s *SettingsService) Initialize(logger *slog.Logger) error {
 			return err
 		}
 	}
-	logger.Debug(fmt.Sprintf(`wayd config director: %s`, dataDir.String()))
+	s.logger.Debug(fmt.Sprintf(`wayd config director: %s`, dataDir.String()))
 
 	// create data directory
 	if !dataDir.Exists() {
@@ -75,7 +77,7 @@ func (s *SettingsService) Initialize(logger *slog.Logger) error {
 			return err
 		}
 	}
-	logger.Debug(fmt.Sprintf(`wayd data directory: %s`, dataDir.String()))
+	s.logger.Debug(fmt.Sprintf(`wayd data directory: %s`, dataDir.String()))
 
 	s.configDir = configDir
 	s.dataDir = dataDir
@@ -83,19 +85,19 @@ func (s *SettingsService) Initialize(logger *slog.Logger) error {
 	return nil
 }
 
-func (s *SettingsService) Load(logger *slog.Logger) error {
+func (s *SettingsService) Load() error {
 
 	settingsFile := s.configDir.Join("wayd.toml")
-	logger.Debug(fmt.Sprintf(`wayd settings file: %s`, settingsFile.String()))
+	s.logger.Debug(fmt.Sprintf(`wayd settings file: %s`, settingsFile.String()))
 
 	if !settingsFile.Exists() {
-		logger.Debug(fmt.Sprintf(`Creating default wayd settings file: %s`, settingsFile.String()))
+		s.logger.Debug(fmt.Sprintf(`Creating default wayd settings file: %s`, settingsFile.String()))
 		settingsFile.Write([]byte(defaultSettings))
 	}
 
 	s.settingsFile = settingsFile
 
-	logger.Debug("Loadig wayd settings...")
+	s.logger.Debug("Loadig wayd settings...")
 
 	cfgText, err := settingsFile.Read()
 	if err != nil {
@@ -127,19 +129,34 @@ func (s *SettingsService) DatabasePath() string {
 	return s.dataDir.Join("wayd.db").String()
 }
 
-func NewSettings(logger *slog.Logger) (*SettingsService, error) {
+func (s *SettingsService) Name() string {
+	return "SettingsService"
+}
+
+func (s *SettingsService) OnStartup(ctx context.Context, options application.ServiceOptions) error {
+	s.logger.Debug(fmt.Sprintf("SettingsService.OnStartup... %s", options.Name))
+	return nil
+}
+
+func (s *SettingsService) OnShutdown() error {
+	s.logger.Debug("SettingsService.OnShutdown...")
+	return nil
+}
+
+func NewSettings(appDirs appdirs.AppDirs, logger *slog.Logger) (*SettingsService, error) {
 	settings := Settings{}
 	service := SettingsService{
+		logger:   logger,
 		Settings: &settings,
 	}
 
-	err := service.Initialize(logger)
+	err := service.Initialize(appDirs)
 
 	if err != nil {
 		return &service, err
 	}
 
-	err = service.Load(logger)
+	err = service.Load()
 
 	if err != nil {
 		return &service, err

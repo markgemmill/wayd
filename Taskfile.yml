@@ -9,15 +9,11 @@ includes:
 vars:
   APP_NAME: "wayd"
   BIN_DIR: "bin"
-  # VITE_PORT: '{{.WAILS_VITE_PORT | default 9246}}'
-  VITE_PORT: '9246'
+  WAILS_VITE_PORT: '9347'
+  VITE_PORT: '{{.WAILS_VITE_PORT | default 9246}}'
+  # VITE_PORT: '9246'
 
 tasks:
-
-  sql:build:
-    summary: Build sqlc generated database code 
-    cmds:
-      - sqlc generate
 
   build:
     summary: Builds the application
@@ -27,6 +23,8 @@ tasks:
   package:
     summary: Packages a production build of the application
     cmds:
+      - cmd: rm -f ./bin/wayd
+      - cmd: rm -rf ./bin/wayd.app
       - task: "{{OS}}:package"
 
   run:

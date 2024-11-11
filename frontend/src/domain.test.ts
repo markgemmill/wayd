@@ -1,5 +1,5 @@
 import { expect, test } from "vitest"
-import { DateRange, absoluteEndDate, absoluteStartDate } from "./domain"
+import { DateRange, absoluteEndDate, absoluteStartDate } from "./domain.js"
 import dayjs from "dayjs"
 
 

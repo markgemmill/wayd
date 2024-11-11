@@ -77,8 +77,9 @@ func RunReminders(popup *application.WebviewWindow, log *slog.Logger, settings *
 		select {
 		case t := <-alertNotice:
 			log.Debug(fmt.Sprintf("ALERT %s --> alert", t.Format(TIMEFORMAT)))
-			if !popup.IsVisible() {
-				popup.Show()
+			popup.EmitEvent("display-prompt")
+			if !popup.IsFocused() {
+				popup.Center()
 				popup.Focus()
 			}
 		case d := <-delayNotice:

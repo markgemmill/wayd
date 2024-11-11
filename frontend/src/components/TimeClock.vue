@@ -7,12 +7,12 @@ import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import dayjs from "dayjs"
 import type { Dayjs } from "dayjs"
 
-let timerId = null
+let timerId: NodeJS.Timeout | null  = null
 const startValue = "00:00:00"
 const displayTime = ref<string>(startValue)
 
 const { startTime, format="clock" }= defineProps<{
-    startTime: Dayjs | null 
+    startTime: Dayjs | null | undefined 
     format: string
 }>()
 

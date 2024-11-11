@@ -7,10 +7,10 @@ import {Create as $Create} from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import * as gorm$0 from "../../../../../gorm.io/gorm/models.js";
+import * as gorm$0 from "../../../gorm.io/gorm/models.js";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import * as time$0 from "../../../../../time/models.js";
+import * as time$0 from "../../../time/models.js";
 
 export class Category {
     "ID": number;

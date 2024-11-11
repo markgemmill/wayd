@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/glebarez/sqlite"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -47,6 +48,20 @@ func NewDatabaseService(location string, logger *slog.Logger) (*DatabaseService,
 	}
 
 	return &service, nil
+}
+
+func (s *DatabaseService) Name() string {
+	return "DatabaseService"
+}
+
+func (s *DatabaseService) OnStartup(ctx context.Context, options application.ServiceOptions) error {
+	s.log.Debug(fmt.Sprintf("DatabaseService.OnStartup... %s", options.Name))
+	return nil
+}
+
+func (s *DatabaseService) OnShutdown() error {
+	s.log.Debug("DatabaseService.OnShutdown...")
+	return nil
 }
 
 func (dbs *DatabaseService) Close() error {

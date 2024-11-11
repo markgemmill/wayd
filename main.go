@@ -6,10 +6,13 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"time"
 
-	"github.com/markgemmill/wayd/services"
-	db "github.com/markgemmill/wayd/services/database"
+	"wayd/services"
+	db "wayd/services/database"
 
+	"github.com/markgemmill/appdirs"
+	"github.com/markgemmill/pathlib"
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
@@ -26,11 +29,25 @@ var assets embed.FS
 // logs any error that might occur.
 func main() {
 
-	logger := services.ApplicationLogger()
-
-	settings, err := services.NewSettings(logger.Logger())
+	appDirs := appdirs.NewAppDirs("wayd", "")
+	logDir := pathlib.NewPath(appDirs.UserLogDir(), 0777)
+	err := logDir.MkDirs()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
+	}
+	// fmt.Print(logDir.String())
+	timestamp := time.Now().Format("20060102-150405")
+	logFile := logDir.Join(fmt.Sprintf("wayd-%s.log.txt", timestamp))
+	logWriter, err := logFile.Open()
+	if err != nil {
+		panic(err)
+	}
+	defer logWriter.Close()
+	logger := services.ApplicationLogger(logWriter)
+
+	settings, err := services.NewSettings(appDirs, logger.Logger())
+	if err != nil {
+		logger.Fatal(fmt.Sprintf("%s", err))
 		return
 	}
 
@@ -51,21 +68,26 @@ func main() {
 	app := application.New(application.Options{
 		Name:        "wayd",
 		Description: "What Are You Doing?",
+		Logger:      logger.Logger(),
 		Services: []application.Service{
-			application.NewService(settings),
 			application.NewService(logger),
+			application.NewService(settings),
 			application.NewService(dataService),
 		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
 		},
 		Mac: application.MacOptions{
+			// TODO: true or false?
 			ApplicationShouldTerminateAfterLastWindowClosed: true,
 		},
 	})
 
-	app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
+	createMenu(app, logger.Logger())
+
+	window := app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
 		Title:     "Wayd!",
+		Name:      "Main",
 		Width:     390,
 		Height:    844,
 		MinWidth:  390,
@@ -78,29 +100,42 @@ func main() {
 			TitleBar:                application.MacTitleBarHiddenInset,
 		},
 		BackgroundColour: application.NewRGB(0, 0, 0),
-		URL:              "/new",
+		URL:              "/",
 	})
 
-	popup := app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
-		Name:          "name",
-		Title:         "name",
-		Width:         390,
-		Height:        390,
-		MinWidth:      390,
-		MinHeight:     390,
-		MaxWidth:      390,
-		MaxHeight:     390,
-		AlwaysOnTop:   true,
-		URL:           "/prompt",
-		Hidden:        true,
-		DisableResize: true,
-		Centered:      true,
-		Frameless:     true,
+	logger.Debug(fmt.Sprintf("main window id: %d", window.ID()))
+	logger.Debug(fmt.Sprintf("main window name: %s", window.Name()))
+
+	// popup := app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
+	// 	Name:          "Alert",
+	// 	Title:         "Alert",
+	// 	Width:         390,
+	// 	Height:        390,
+	// 	MinWidth:      390,
+	// 	MinHeight:     390,
+	// 	MaxWidth:      390,
+	// 	MaxHeight:     390,
+	// 	AlwaysOnTop:   true,
+	// 	URL:           "/prompt", /* url should be /prompt */
+	// 	Hidden:        true,
+	// 	DisableResize: true,
+	// 	Centered:      true,
+	// 	Frameless:     false,
+	// })
+
+	// logger.Debug(fmt.Sprintf("popup window id: %d", popup.ID()))
+	// logger.Debug(fmt.Sprintf("popup window name: %s", popup.Name()))
+
+	app.OnEvent("dock-window", func(e *application.CustomEvent) {
+		winSize := window.Bounds()
+		screen, _ := window.GetScreen()
+		x := screen.Bounds.Width - winSize.Width
+		y := screen.Bounds.Height - winSize.Height
+		window.SetPosition(x, y)
 	})
 
 	app.OnEvent("close-prompt", func(e *application.CustomEvent) {
 		logger.Debug("[EVT close-prompt] started")
-		popup.Hide()
 		eventData := e.Data.(map[string]any)
 
 		logger.Debug(fmt.Sprintf("[EVT close-prompt] Close Prompt Data: %v", eventData))
@@ -125,11 +160,13 @@ func main() {
 		logger.Debug("[EVT new-entry] completed")
 	})
 
-	go services.RunReminders(popup, logger.Logger(), settings.Settings, reminderDelayNotice)
+	go services.RunReminders(window, logger.Logger(), settings.Settings, reminderDelayNotice)
 
+	logger.Debug("app.Run starting...")
 	err = app.Run()
+	logger.Debug("app.Run completed...")
 
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(fmt.Sprintf("%s", err))
 	}
 }
