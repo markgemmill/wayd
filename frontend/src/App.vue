@@ -4,7 +4,7 @@
       <TimeClock :format="'icon'" :start-time="currentTimer" @clicked="navigateEntry"></TimeClock>
       <div class="d-flex flex-grow-1"></div>
       <HomeIcon class="me-2" :width="20" :height="20" @click="navigateTo('')"></HomeIcon>
-      <DockIcon class="me-2" :width="18" :height="18" @click="dockWindow"></DockIcon>
+      <DockIcon class="me-2" :width="18" :height="18" :dock-position="store.settings.DockPosition" @click="dockWindow"></DockIcon>
       <ReportFileIcon class="me-2" :width="20" :height="20" @click="navigateTo('reporting')"></ReportFileIcon>
       <InboxIcon class="me-2" :width="20" :height="20" @click="navigateTo('categories')"></InboxIcon>
       <InboxesIcon class="me-2" :width="20" :height="20" @click="navigateTo('projects')"></InboxesIcon>
@@ -64,7 +64,7 @@ store.$subscribe((mutation, state) => {
 })
 
 const dockWindow = () => {
-    const event = new Events.WailsEvent("dock-window", { Position: "UR"})
+    const event = new Events.WailsEvent("dock-window", { Position: store.settings.DockPosition})
     Events.Emit(event)
 }
 
@@ -97,7 +97,4 @@ onBeforeMount(() => {
 </script>
 
 <style scoped>
-#header {
-  position: relative;
-}
 </style>

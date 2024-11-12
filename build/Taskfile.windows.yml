@@ -12,13 +12,15 @@ tasks:
       - task: common:generate:icons
       - task: generate:syso
     cmds:
+      - rm -f {{.BIN_DIR}}/{{.APP_NAME}}.exe
       - go build {{.BUILD_FLAGS}} -o {{.BIN_DIR}}/{{.APP_NAME}}.exe
     vars:
       BUILD_FLAGS: '{{if eq .PRODUCTION "true"}}-tags production -trimpath -ldflags="-w -s -H windowsgui"{{else}}-gcflags=all="-l"{{end}}'
     env:
       GOOS: windows
       CGO_ENABLED: 0
-      GOARCH: '{{.ARCH | default ARCH}}'
+      # GOARCH: '{{.ARCH | default ARCH}}'
+      GOARCH: amd64
       PRODUCTION: '{{.PRODUCTION | default "false"}}'
 
   package:

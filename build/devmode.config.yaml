@@ -27,3 +27,5 @@ config:
       type: blocking
     - cmd: wails3 task run
       type: primary
+  env:
+    WAILS_DEV: 1

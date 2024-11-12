@@ -49,8 +49,11 @@ const elapsedTime = () => {
     if (minutes > 0) {
         seconds = seconds - minute_seconds 
     }
-
-    displayTime.value = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+    if (Number.isNaN(hours) || Number.isNaN(minutes) || Number.isNaN(seconds)) {
+        displayTime.value = "00:00:00"
+    } else {
+        displayTime.value = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+    }
 }
 
 const onClick = () => {

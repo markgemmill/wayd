@@ -1,33 +1,31 @@
 <template>
-    <div class="column">
-        <div class="project-list column">
-            <ModalFrame ref="modal">
-                <div class="row w-100">
-                    <form>
-                        <div><h2>New Project</h2></div>
-                        <div class="mb-2">
-                            <div for="category" class="form-label">Category</div>
-                            <select id="category" class="form-control form-control-sm" v-model="modalCategory">
-                                <option v-for="category in store.categories" :key="category.ID" :value="category">
-                                    {{ category.Name }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="mb-2">
-                            <div for="project-name" class="form-label">Name</div>
-                            <input type="text" id="project-name" class="form-control form-control-sm ps-1" v-model="modalValue">
-                        </div>
-                        <div class="d-flex flex-row-reverse">
-                            <button type="button" class="btn btn-sm btn-primary" :disabled="!allowCreateNew" @click="saveProject">SAVE</button>
-                        </div>
-                    </form>
+<div class="column">
+        <ModalFrame ref="modal">
+            <form class="form">
+                <div><h2>New Project</h2></div>
+                <div class="row mb-2">
+                    <div for="category" class="form-label">Category</div>
+                    <select id="category" class="form-control form-control-sm" v-model="modalCategory">
+                        <option v-for="category in store.categories" :key="category.ID" :value="category">
+                            {{ category.Name }}
+                        </option>
+                    </select>
                 </div>
-            </ModalFrame>
-            <div class="d-flex flex-row-reverse ms-0 ps-0">
+                <div class="row mb-2">
+                    <div for="project-name" class="form-label">Name</div>
+                    <input type="text" id="project-name" class="form-control form-control-sm ps-1" v-model="modalValue">
+                </div>
+                <div class="d-flex flex-row-reverse">
+                    <button type="button" class="btn btn-sm btn-primary" :disabled="!allowCreateNew" @click="saveProject">SAVE</button>
+                </div>
+            </form>
+        </ModalFrame>
+        <div class="project-list column">
+            <div class="content-header">
                 <PlusCircleIcon :height="24" :width="24" @clicked="newProject"></PlusCircleIcon>
                 <h2 class="d-flex flex-grow-1 align-left">Projects</h2>
             </div>
-            <div class="row">
+            <div class="row content-body">
                 <table class="table">
                     <thead>
                         <tr>
@@ -38,7 +36,13 @@
                     <tbody>
                         <tr v-for="project in store.projects" :key="project.ID">
                             <td>{{  formatID(project.ID) }}</td>
-                            <td>{{  project.Name }}</td>
+                            <td>
+                                <div class="col">
+                                    <div class="row project-category">{{  project.Category.Name }}</div>
+                                    <div class="row project-name">{{  project.Name }}</div>
+                                </div>
+                                
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -96,6 +100,11 @@ const formatID = (id: number) => {
     margin-right: 10px;
     text-align: right;
     color: #AAA;
+}
+.project-category {
+    font-size: 0.6em;
+    padding-left: 5px;
+    color: #444;
 }
 .project-name {
     display: flex;

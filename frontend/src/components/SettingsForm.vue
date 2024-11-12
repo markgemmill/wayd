@@ -24,6 +24,15 @@
                     <option value="HFH">Half Hour</option>
                 </select>
             </div>
+            <div class="mb-2">
+                <label for="dock-position" class="form-label">Dock Position</label>
+                <select id="dock-position" class="form-control form-control-sm" v-model="dockPosition">
+                    <option value="UR">Upper Right</option>
+                    <option value="UL">Upper Left</option>
+                    <option value="BR">Bottom Right</option>
+                    <option value="BL">Bottom Left</option>
+                </select>
+            </div>
             <div class="d-flex flex-row-reverse">
                 <button type="button" class="btn btn-sm btn-outline-secondary" :disabled="!changes" @click="saveSettings">Save</button>
             </div>
@@ -37,7 +46,7 @@ import { useStore } from '../store';
 import { router } from '../router';
 import VueDatePicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import { Time } from '../domain';
 
 const store = useStore()
@@ -47,12 +56,14 @@ const endDate = ref<Time>()
 const promptCycle = ref<number>()
 const syncCycle = ref<string>()
 const changes = ref<boolean>(false)
+const dockPosition = ref<string>()
 
 const saveSettings = () => {
     store.settings.DayEndsAt = endDate.value?.toString()
     store.settings.DayStartsAt = startDate.value?.toString()
     store.settings.PromptCycle = promptCycle.value 
     store.settings.SyncCycleTo = syncCycle.value
+    store.settings.DockPosition = dockPosition.value
     store.saveSettings().then(() => {
         router.push("/")        
     })
@@ -63,8 +74,9 @@ onMounted(() => {
     endDate.value = Time.fromTimeString(store.settings.DayEndsAt) 
     promptCycle.value = store.settings.PromptCycle
     syncCycle.value = store.settings.SyncCycleTo
+    dockPosition.value = store.settings.DockPosition
 
-    watch([startDate, endDate, promptCycle, syncCycle], () => {
+    watch([startDate, endDate, promptCycle, syncCycle, dockPosition], () => {
         changes.value = true 
     })
 })

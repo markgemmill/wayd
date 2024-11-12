@@ -5,6 +5,7 @@ import { router } from './router'
 import dayjs from "dayjs"
 import duration from "dayjs/plugin/duration"
 import "bootstrap/dist/css/bootstrap.min.css"
+import "./wayd.css"
 
 
 dayjs.extend(duration)

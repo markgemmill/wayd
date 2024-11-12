@@ -52,17 +52,21 @@ const emit = defineEmits<{
     padding-top: 25px;
 }
 .modal-form {
-    position: relative;
-    margin: 10px auto;
+    position: fixed;
+    top: 30px;
+    left: 0;
+    right: 0;
+    margin: 10%;
     display: flex;
     flex-direction: column;
     align-items: start;
-    z-index: 100;
+    z-index: 10000;
     background-color: white;
     border: 1px solid green;
     border-radius: 5px;
     width: 80%;
-    padding: 20px;
+    padding: 20px 30px; 
+    box-shadow: 5px 5px 5px #BBB;
 }
 .exit-icon {
     position: absolute;

@@ -156,7 +156,9 @@ func (dbs *DatabaseService) GetProjectById(projectId int) Project {
 
 func (dbs *DatabaseService) GetAllActiveProjects() []Project {
 	var projects []Project
-	dbs.Db.Where("active = ?", 1).Find(&projects)
+	// dbs.Db.Where("active = ?", 1).Joins("Category").Find(&projects)
+	dbs.Db.Preload("Category").Where("active = ?", 1).Find(&projects)
+	dbs.log.Debug(fmt.Sprintf("%v", projects))
 	return projects
 }
 

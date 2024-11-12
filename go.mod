@@ -70,4 +70,4 @@ require (
 	modernc.org/sqlite v1.23.1 // indirect
 )
 
-replace github.com/wailsapp/wails/v3 => ../wails/v3
+// replace github.com/wailsapp/wails/v3 => ../wails/v3

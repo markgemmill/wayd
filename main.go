@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"strconv"
-	"time"
 
 	"wayd/services"
 	db "wayd/services/database"
@@ -35,14 +34,21 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	// fmt.Print(logDir.String())
-	timestamp := time.Now().Format("20060102-150405")
-	logFile := logDir.Join(fmt.Sprintf("wayd-%s.log.txt", timestamp))
-	logWriter, err := logFile.Open()
+
+	// timestamp := time.Now().Format("20060102-150405")
+	// logFile := logDir.Join(fmt.Sprintf("wayd-%s.log.txt", timestamp))
+	// logWriter, err := logFile.Open()
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	logWriter, err := services.LoggingSink(logDir)
 	if err != nil {
 		panic(err)
 	}
-	defer logWriter.Close()
+
+	// defer logWriter.Close()
+
 	logger := services.ApplicationLogger(logWriter)
 
 	settings, err := services.NewSettings(appDirs, logger.Logger())
@@ -106,31 +112,26 @@ func main() {
 	logger.Debug(fmt.Sprintf("main window id: %d", window.ID()))
 	logger.Debug(fmt.Sprintf("main window name: %s", window.Name()))
 
-	// popup := app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
-	// 	Name:          "Alert",
-	// 	Title:         "Alert",
-	// 	Width:         390,
-	// 	Height:        390,
-	// 	MinWidth:      390,
-	// 	MinHeight:     390,
-	// 	MaxWidth:      390,
-	// 	MaxHeight:     390,
-	// 	AlwaysOnTop:   true,
-	// 	URL:           "/prompt", /* url should be /prompt */
-	// 	Hidden:        true,
-	// 	DisableResize: true,
-	// 	Centered:      true,
-	// 	Frameless:     false,
-	// })
-
-	// logger.Debug(fmt.Sprintf("popup window id: %d", popup.ID()))
-	// logger.Debug(fmt.Sprintf("popup window name: %s", popup.Name()))
-
 	app.OnEvent("dock-window", func(e *application.CustomEvent) {
-		winSize := window.Bounds()
 		screen, _ := window.GetScreen()
-		x := screen.Bounds.Width - winSize.Width
-		y := screen.Bounds.Height - winSize.Height
+		eventData := e.Data.(map[string]any)
+		dockPosition := eventData["Position"].(string)
+		var x int = 0
+		var y int = 0
+		switch dockPosition {
+		case "UR":
+			x = screen.Bounds.Width - window.Width()
+			y = screen.Bounds.Height - window.Height()
+		case "UL":
+			x = 0
+			y = screen.Bounds.Height - window.Height()
+		case "BR":
+			x = screen.Bounds.Width - window.Width()
+			y = 0
+		case "BL":
+			x = 0
+			y = 0
+		}
 		window.SetPosition(x, y)
 	})
 

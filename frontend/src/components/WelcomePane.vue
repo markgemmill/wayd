@@ -1,12 +1,9 @@
 <template>
     <div class="column">
-        <div class="row">
-        </div>
-        <div class="row mb-3">
-            <button type="button" class="btn btn-lg btn-outline-primary" @click="startWithEntry">Start New Timer</button>
-        </div>
-        <div class="row">
-            <ProjectSummary></ProjectSummary>
+        <div class="row mt-5">
+            <button type="button" class="start-button" @click="startWithEntry">
+                New
+            </button>
         </div>
     </div>
 </template>
@@ -48,5 +45,20 @@ const viewProjects = () => {
 .titled {
     font-size: 1.5em;
     font-weight: bold;
+}
+.start-button {
+    height: 240px;
+    width: 240px;
+    padding: 10px;
+    margin: auto;
+    border-radius: 50%;
+    border: 1px solid #CCC;
+    background-color: white;
+    color: #CCC;
+    font-size: 3em;
+}
+.start-button:hover {
+    border-color: black;
+    color: #444;
 }
 </style>
