@@ -38,6 +38,11 @@ export function CreateDefaults(): Promise<void> & { cancel(): void } {
     return $resultPromise;
 }
 
+export function DeleteProject(projectId: number): Promise<void> & { cancel(): void } {
+    let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.DeleteProject", projectId) as any;
+    return $resultPromise;
+}
+
 export function EntryCount(): Promise<number> & { cancel(): void } {
     let $resultPromise = $Call.ByName("wayd/services/database.DatabaseService.EntryCount") as any;
     return $resultPromise;

@@ -13,7 +13,7 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-const version = "0.1.6"
+const version = "0.1.7"
 
 var positions = map[string]bool{"center": true, "ul": true, "ur": true, "ll": true, "lr": true}
 

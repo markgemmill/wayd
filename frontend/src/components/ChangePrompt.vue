@@ -1,6 +1,6 @@
 <template>
     <div class="column">
-        <div class="column prompt">
+        <form class="form prompt">
             <div class="row mb-1">
                 <h1>What Are You Doing?</h1>
             </div>
@@ -12,8 +12,8 @@
             <div class="row mb-2">
                 <label for="delay-prompt" class="form-label">Don't Remind Me For...</label>
                 <select id="delay-prompt" class="form-select" v-model="delayPrompt">
-                    <option value="1" selected>1 minute</option>
-                    <option value="2" selected>2 minute</option>
+                    <option value="1">1 minute</option>
+                    <option value="2">2 minute</option>
                     <option value="5">5 minutes</option>
                     <option value="10">10 minutes</option>
                     <option value="15">15 minutes</option>
@@ -25,10 +25,13 @@
                     <option value="240">4 hour</option>
                 </select>
             </div>
-            <div class="row ms-1 me-1">
-                <button type="button" class="btn btn-sm btn-primary" @click="handleClose">Close</button>
+            <div class="row">
+                <div class="dflex flex-row-reverse">
+                    <button type="button" class="btn btn-sm btn-primary me-1" @click="handleClose">Set Reminder</button>
+                    <button type="button" class="btn btn-sm btn-danger" @click="newTask">New Task</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </template>
 
@@ -54,6 +57,10 @@ const handleClose = () => {
     runtime.Events.Emit(event)
 
     router.push("/current")
+}
+
+const newTask = () => {
+    router.push("/new")
 }
 
 onMounted(() => {

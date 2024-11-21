@@ -11,6 +11,8 @@ vars:
   BIN_DIR: "bin"
   WAILS_VITE_PORT: '9347'
   VITE_PORT: '{{.WAILS_VITE_PORT | default 9246}}'
+  VERSION:
+    sh: dover
 
 tasks:
 

@@ -1,24 +1,26 @@
 <template>
-<div class="column">
+<div class="col">
         <ModalFrame ref="modal">
-            <form class="form">
-                <div><h2>New Project</h2></div>
-                <div class="row mb-2">
-                    <div for="category" class="form-label">Category</div>
-                    <select id="category" class="form-control form-control-sm" v-model="modalCategory">
-                        <option v-for="category in store.categories" :key="category.ID" :value="category">
-                            {{ category.Name }}
-                        </option>
-                    </select>
-                </div>
-                <div class="row mb-2">
-                    <div for="project-name" class="form-label">Name</div>
-                    <input type="text" id="project-name" class="form-control form-control-sm ps-1" v-model="modalValue">
-                </div>
-                <div class="d-flex flex-row-reverse">
-                    <button type="button" class="btn btn-sm btn-primary" :disabled="!allowCreateNew" @click="saveProject">SAVE</button>
-                </div>
-            </form>
+            <div class="col">
+                <form class="form">
+                    <div class="row"><h2>New Project</h2></div>
+                    <div class="row mb-2">
+                        <label for="category" class="form-label">Category</label>
+                        <select id="category" class="form-control form-control-sm" v-model="modalCategory">
+                            <option v-for="category in store.categories" :key="category.ID" :value="category">
+                                {{ category.Name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="row mb-2">
+                        <label for="project-name" class="form-label">Name</label>
+                        <input type="text" id="project-name" class="form-control form-control-sm ps-1" v-model="modalValue">
+                    </div>
+                    <div class="row d-flex flex-row-reverse">
+                        <button type="button" class="btn btn-sm btn-primary" :disabled="!allowCreateNew" @click="saveProject">SAVE</button>
+                    </div>
+                </form>
+            </div>
         </ModalFrame>
         <div class="project-list column">
             <div class="content-header">
@@ -27,21 +29,28 @@
             </div>
             <div class="row content-body">
                 <table class="table">
-                    <thead>
+                    <!-- <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Project Name</th>
                         </tr>
-                    </thead>
+                    </thead> -->
                     <tbody>
                         <tr v-for="project in store.projects" :key="project.ID">
-                            <td>{{  formatID(project.ID) }}</td>
+                            <td>
+                                <div class="col pe-1">
+                                    <div class="row project-category">Id</div>
+                                    <div class="row project-name">{{  formatID(project.ID) }}</div>
+                                </div>
+                            </td>
                             <td>
                                 <div class="col">
                                     <div class="row project-category">{{  project.Category.Name }}</div>
                                     <div class="row project-name">{{  project.Name }}</div>
                                 </div>
-                                
+                            </td>
+                            <td class="button-column">
+                                <DeleteIcon class="delete-button" :height="16" :width="16" @clicked="deleteProject(project.ID)"></DeleteIcon>
                             </td>
                         </tr>
                     </tbody>
@@ -56,6 +65,7 @@ import { ref, computed, watch } from 'vue'
 import { useStore } from '../store';
 import { router } from '../router';
 import PlusCircleIcon from '../icons/PlusCircleIcon.vue';
+import DeleteIcon from '@/icons/DeleteIcon.vue';
 import ModalFrame from './ModalFrame.vue';
 import { Category } from "../../bindings/wayd/services/database"
 
@@ -73,6 +83,10 @@ const saveProject = () => {
     store.newProject(modalValue.value, modalCategory.value).then(() => {
         modal.value.hide() 
     })
+}
+
+const deleteProject = (projectId: number) => {
+    store.deleteProject(projectId) 
 }
 
 const allowCreateNew = computed(() => {
@@ -123,5 +137,17 @@ const formatID = (id: number) => {
 }
 .input {
     margin-bottom: 10px;
+}
+.button-column {
+    position: relative;
+    /* border: 1px solid red; */
+}
+.delete-button {
+    margin: 0;
+    padding: 0;
+    /* border: 1px solid red; */
+    position: absolute;
+    right: 8px;
+    bottom: 15px;
 }
 </style>

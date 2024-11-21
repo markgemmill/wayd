@@ -130,6 +130,22 @@ export const useStore = defineStore("", () => {
         })
     }
 
+    const deleteProject = (projectId: number): Promise<void> => {
+        return DatabaseService.DeleteProject(projectId).then(() => {
+            let idToDelete = -1
+            for (let i = 0; i < projects.value.length; i++) {
+                if (projects.value[i].ID === projectId) {
+                    idToDelete = i
+                    projects.value.splice(i, 1)
+                    break
+                }
+            }
+            return 
+        }).catch((err) => {
+            log.Error(`${err}`)
+        }) 
+    }
+
     const newCategory = (name: string): Promise<void> => {
         return DatabaseService.NewCategory(name).then((category: Category) => {
             categories.value.push(category) 
@@ -160,6 +176,7 @@ export const useStore = defineStore("", () => {
         newEntry,
         newProject,
         newCategory,
+        deleteProject,
     }
     
 })

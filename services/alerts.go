@@ -81,6 +81,7 @@ func RunReminders(popup *application.WebviewWindow, log *slog.Logger, settings *
 			if !popup.IsFocused() {
 				popup.Center()
 				popup.Focus()
+				popup.SetAlwaysOnTop(true)
 			}
 		case d := <-delayNotice:
 			log.Debug(fmt.Sprintf("ALERT next delay is %d minutes", d))

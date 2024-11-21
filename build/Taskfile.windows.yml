@@ -13,7 +13,7 @@ tasks:
       - task: generate:syso
     cmds:
       - rm -f {{.BIN_DIR}}/{{.APP_NAME}}.exe
-      - go build {{.BUILD_FLAGS}} -o {{.BIN_DIR}}/{{.APP_NAME}}.exe
+      - go build {{.BUILD_FLAGS}} -o {{.BIN_DIR}}/{{.APP_NAME}}-{{.VERSION}}.exe
     vars:
       BUILD_FLAGS: '{{if eq .PRODUCTION "true"}}-tags production -trimpath -ldflags="-w -s -H windowsgui"{{else}}-gcflags=all="-l"{{end}}'
     env:
@@ -21,12 +21,21 @@ tasks:
       CGO_ENABLED: 0
       # GOARCH: '{{.ARCH | default ARCH}}'
       GOARCH: amd64
-      PRODUCTION: '{{.PRODUCTION | default "false"}}'
+      # PRODUCTION: '{{.PRODUCTION | default "false"}}'
+      PRODUCTION: "true"
 
   package:
     summary: Packages a production build of the application into a `.exe` bundle
     cmds:
       - task: create:nsis:installer
+
+  portable:
+    summary: Zip a production build of the application.
+    dir: ./
+    deps:
+      - task: build 
+    cmds:
+      - zip -r bin/wayd-{{.VERSION}}.zip bin/wayd-{{.VERSION}}.exe
 
   generate:syso:
     summary: Generates Windows `.syso` file

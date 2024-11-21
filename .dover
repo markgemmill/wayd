@@ -1,0 +1,5 @@
+[dover]
+version = "0.1.6"
+versioned_files = [
+	"services/settings.go"
+]

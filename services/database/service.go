@@ -154,6 +154,14 @@ func (dbs *DatabaseService) GetProjectById(projectId int) Project {
 	return project
 }
 
+func (dbs *DatabaseService) DeleteProject(projectId int) error {
+	result := dbs.Db.Model(&Project{}).Where("id = ?", projectId).Update("active", 0)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
 func (dbs *DatabaseService) GetAllActiveProjects() []Project {
 	var projects []Project
 	// dbs.Db.Where("active = ?", 1).Joins("Category").Find(&projects)
