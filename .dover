@@ -1,5 +1,6 @@
 [dover]
-version = "0.1.6"
+version = "0.1.7"
 versioned_files = [
+    "./.dover:1",
 	"services/settings.go"
 ]
